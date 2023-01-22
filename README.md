@@ -4,4 +4,4 @@
 
 A simple todo list application built with React using Material UI. User can add a new task to the list, edit and pick a deadline, complete or delete, and manage the list with a simple drag and drop feature.
 
-demo link: [here] (https://bokanyi.github.io/todo-app-react/)
+demo link: [here](https://bokanyi.github.io/todo-app-react/)

@@ -42,7 +42,7 @@ export const List = ({todos, setTodos, dateHidden, filtered, removeTodo, createD
             // flexDirection: "column-reverse",
             flexDirection: "column",
             gap: "1rem",
-            maxHeight: "400px",
+            maxHeight: "500px",
             padding: "1em",
             overflow: "auto",
             // width: "400px",

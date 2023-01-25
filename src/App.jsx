@@ -92,7 +92,7 @@ function App() {
             setFiltered={setFiltered}
             
             />
-          </TodoContext.Provider>
+           </TodoContext.Provider>
       </Box>
     </DndProvider>
   )

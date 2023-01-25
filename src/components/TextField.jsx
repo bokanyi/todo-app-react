@@ -16,14 +16,12 @@ const  transformDate = (str) => {
 
 const CustomTextField = ({
     onChange, 
-    disabled, 
     value, 
     isCompleted, 
     children, 
     deadline, 
     dateHidden,
     index,
-    createDeadline
 }) => {
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -56,10 +54,9 @@ const CustomTextField = ({
             }}
             size = "small"
             onChange={onChange}
-            disabled={disabled}
+            disabled={isCompleted}
             value={value}
             variant= "standard"
-            // inputProps={fontColor}
             >
             {children}
         </TextField>  
@@ -71,6 +68,7 @@ const CustomTextField = ({
         </Typography>
 
         <Popover
+            sx={{display: isCompleted ? "none" : "block"}}
             id={id}
             open={open}
             anchorEl={anchorEl}
@@ -84,7 +82,6 @@ const CustomTextField = ({
 
         <DateTimePicker
         deadline={deadline}
-        createDeadline={createDeadline}
         index={index}
         />
 

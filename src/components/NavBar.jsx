@@ -1,4 +1,3 @@
-// import {Button} from "@mui/material"
 import { Box } from "@mui/system"
 import  Button  from './Button'
 import FormControl from '@mui/material/FormControl';
@@ -8,7 +7,13 @@ import CircleIcon from '@mui/icons-material/Circle';
 import { useState } from "react";
 
 
-export const NavBar = ({ addTodo, setDateHidden, dateHidden, filtered, setFiltered,}) => {
+export const NavBar = ({ 
+    addTodo, 
+    setDateHidden, 
+    dateHidden, 
+    filtered, 
+    setFiltered
+}) => {
 
     const handleClick = () => {
         addTodo(color)
@@ -19,7 +24,6 @@ export const NavBar = ({ addTodo, setDateHidden, dateHidden, filtered, setFilter
 
     const colors = [
         'primary',
-        // 'secondary',
         'error',
         'warning',
         'info',
@@ -45,8 +49,6 @@ export const NavBar = ({ addTodo, setDateHidden, dateHidden, filtered, setFilter
             // background: "#000",
             width:"80px",
             height:"60px",
-            // borderRadius: "50%",
-
             "& fieldset": { border: 'none' },   
          }}
        
@@ -58,11 +60,8 @@ export const NavBar = ({ addTodo, setDateHidden, dateHidden, filtered, setFilter
 
                 labelId="demo-multiple-name-label"
                 id="demo-multiple-name"
-                // multiple
                 value={color}
                 onChange={(e)=> setColor(e.target.value)}
-                // input={<OutlinedInput label="color" />}
-                // MenuProps={MenuProps}
                 >
                 {colors.map((color) => (
                     <MenuItem

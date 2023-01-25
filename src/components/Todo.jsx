@@ -1,4 +1,4 @@
-import React, {useState, useRef } from 'react'
+import React, {useState, useRef, useContext } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import  Button  from './Button'
 import  TextField  from './TextField'
@@ -7,22 +7,20 @@ import Paper from '@mui/material/Paper';
 import { Radio } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { TodoContext } from '../TodoContext';
+
 
 
 
 const Todo = ({
   todo, 
-  completeTodo, 
-  removeTodo, 
   index, 
   moveListItem, 
   handleChange, 
   dateHidden,
-  createDeadline 
 }) => {
-
-  const [isDisabled, setIsDisabled] = useState(todo.isCompleted)
   
+  const {todos, setTodos} = useContext(TodoContext)
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'item',
@@ -52,8 +50,21 @@ const Todo = ({
   const ref = useRef(null)
   const dragDropRef = dragRef(dropRef(ref))
 
-
   const opacity = isDragging ? 0 : 1
+
+  const removeTodo = (id)=> {
+    const newTodos = [...todos];
+    setTodos(newTodos.filter( todo => todo.id !==id))
+  };
+
+  const completeTodo = (id) => {
+    const newTodos = [...todos];
+    newTodos.find(todo =>{ 
+    if(todo.id === id) todo.isCompleted? todo.isCompleted = false : todo.isCompleted = true
+    })
+    setTodos(newTodos); 
+  };
+
 
     return (
 
@@ -70,11 +81,15 @@ const Todo = ({
           justifyContent : "space-between",
           gap: "1rem",
           width: "350px",
-          // maxWidth: "100%",
           padding: "10px",
           border: "1px solid #000", 
           borderRadius: 0,
           boxShadow: "5px 10px",
+          ':hover' : {
+            transform: 'translate(-2px, -2px)',
+            boxShadow: "8px 13px",
+            cursor: "grab",
+          }
 
         }}
         >
@@ -82,47 +97,27 @@ const Todo = ({
           sx={{
             '&, &.Mui-checked': {
               color: `${todo.color}.main`,
-              // color: "black" ,
             },}}
-          checked={isDisabled}
+          checked={todo.isCompleted}
           onClick={()=>{
-            isDisabled ? setIsDisabled(false) : setIsDisabled(true)
             completeTodo(todo.id)
           }}
           value="a"
           name="radio-buttons"
           inputProps={{ 'aria-label': 'A' }}
-          // color={todo.color}
         />
-          {/* <Button
-          onClick={()=>{
-            isDisabled ? setIsDisabled(false) : setIsDisabled(true)
-            completeTodo(todo.id)
-          }}
-          >
-            {todo.isCompleted ? "✏️" : "📌"}
-            </Button> */}
-        
         
         <TextField
           
-        disabled={isDisabled}
         value={todo.text} 
         onChange={(e) => handleChange(e, todo.id)}
         isCompleted = {todo.isCompleted}
         deadline={todo.deadline}
         dateHidden={dateHidden}
         index={todo.id}
-        createDeadline={createDeadline}
-        // setDeadline={setDeadline}
         >
         </TextField>
 
-        {/* <Button
-        onClick={()=> removeTodo(todo.id)}
-        >
-          ✖️
-        </Button> */}
         <IconButton 
         onClick={()=> removeTodo(todo.id)} 
         aria-label="cancel" 

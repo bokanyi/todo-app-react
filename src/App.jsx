@@ -6,6 +6,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { List } from './components/List'
 import { NavBar } from './components/NavBar'
 import { Box } from '@mui/material'
+import { TodoContext } from './TodoContext'
 
 const basicTasks =  [{ 
   id:1,
@@ -36,71 +37,62 @@ const initialState = localStorage.getItem("todos") ?
 
 function App() {
 
-  const [todos,  setTodos] = useState(initialState)
-  const [openTodos,  setOpenTodos] = useState([])
+  const [todos, setTodos] = useState(initialState)
+  const [openTodos, setOpenTodos] = useState([])
   const [filtered, setFiltered] = useState(false)
   const [dateHidden, setDateHidden] = useState(false)
+
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos))
     filterOpen()
   },[todos])
 
-  const transformDate = (date) => {
+  const transformDate = date => {
     let a = new Date(date)
     return a.toISOString().split('T')[0]+'T'+a.getHours() + ':' + (a.getMinutes()<10 ? "0"+a.getMinutes() : a.getMinutes());
   }
 
   const addTodo = color => {
     const newTodos = [...todos, { "color": color, "text": "", "isCompleted": false, "id": Date.now(), "deadline":transformDate(+Date.now()) }];
-    
-    console.log(newTodos)
     setTodos(newTodos);
   };
 
   const filterOpen = () => {
     const openTodos = todos.filter(todo => todo.isCompleted===false)
     setOpenTodos(openTodos)
-    // console.log(openTodos)
   }
 
-  const removeTodo = (id)=> {
-    const newTodos = [...todos];
-    setTodos(newTodos.filter( todo => todo.id !==id))
-  };
+  // const removeTodo = (id)=> {
+  //   const newTodos = [...todos];
+  //   setTodos(newTodos.filter( todo => todo.id !==id))
+  // };
 
-  const createDeadline = (id, newDeadline) => {
-    let newTodos = [...todos];
-    const index = newTodos.findIndex(todo => todo.id==id)
-    newTodos[index].deadline = newDeadline
-    setTodos(newTodos)
-  }
-  // const clearLocalStorage = () => {
-  //   setTodos(basicTasks)
+  // const createDeadline = (id, newDeadline) => {
+  //   let newTodos = [...todos];
+  //   const index = newTodos.findIndex(todo => todo.id==id)
+  //   newTodos[index].deadline = newDeadline
+  //   setTodos(newTodos)
   // }
 
   return (
     <DndProvider backend={HTML5Backend}>
 
       <Box className="app">
-          
-          <List
-          todos={!filtered? todos : openTodos}
-          setTodos={setTodos}
-          dateHidden={dateHidden}
-          filtered={filtered}
-          removeTodo={removeTodo}
-          createDeadline={createDeadline}
-          />
-          <NavBar
-          addTodo={addTodo}
-          setDateHidden={setDateHidden}
-          dateHidden={dateHidden}
-          filtered={filtered}
-          setFiltered={setFiltered}
-          // clearLocalStorage={clearLocalStorage}
-          />
-          {/* <TodoForm addTodo={addTodo}/> */}
+          <TodoContext.Provider value={{todos, setTodos, openTodos, filtered, dateHidden, setDateHidden}}>
+            <List
+            // todos={!filtered? todos : openTodos}
+            dateHidden={dateHidden}
+            />
+            <NavBar
+            addTodo={addTodo}
+            setDateHidden={setDateHidden}
+            dateHidden={dateHidden}
+            filtered={filtered}
+            setFiltered={setFiltered}
+            
+            />
+          </TodoContext.Provider>
       </Box>
     </DndProvider>
   )

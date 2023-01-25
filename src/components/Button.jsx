@@ -10,6 +10,9 @@ const CustomButton = ({onClick, children, style}) =>{
                 p:"0.5rem 1rem",
                 borderRadius: 0,
                 fontWeight: 300,
+                ':hover' : {
+                    transform: 'translate(-2px, -2px)',  
+                  }
 
             }}
             style={style}

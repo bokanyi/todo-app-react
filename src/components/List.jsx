@@ -1,9 +1,20 @@
 import { Box } from '@mui/material'
 import React, { useCallback } from 'react'
+import { useContext } from 'react'
+import { TodoContext } from '../TodoContext'
 import  Todo from './Todo'
 
 
-export const List = ({todos, setTodos, dateHidden, filtered, removeTodo, createDeadline}) => {
+export const List = ({
+    // todos, 
+    // setTodos, 
+    dateHidden, 
+    // filtered, 
+    // removeTodo, 
+    // createDeadline
+}) => {
+
+    const {todos, setTodos, openTodos, filtered} = useContext(TodoContext)
 
     const moveTodotListItem = useCallback(
         (dragIndex, hoverIndex) => {
@@ -25,16 +36,14 @@ export const List = ({todos, setTodos, dateHidden, filtered, removeTodo, createD
         setTodos(changedTodo)
       }
     
-      const completeTodo = (id) => {
-        const newTodos = [...todos];
-        newTodos.find(todo => todo.id === id).isCompleted
-        ? newTodos.find(todo => todo.id === id).isCompleted = false
-        : newTodos.find(todo => todo.id === id).isCompleted = true
-        setTodos(newTodos); 
-      };
+    //   const completeTodo = (id) => {
+    //     const newTodos = [...todos];
+    //     newTodos.find(todo => todo.id === id).isCompleted
+    //     ? newTodos.find(todo => todo.id === id).isCompleted = false
+    //     : newTodos.find(todo => todo.id === id).isCompleted = true
+    //     setTodos(newTodos); 
+    //   };
     
-      
-
     return (
         <Box className='todo-list' 
         sx = {{
@@ -48,17 +57,17 @@ export const List = ({todos, setTodos, dateHidden, filtered, removeTodo, createD
             // width: "400px",
         }}
         >
-            {todos.map((todo, index) => (
+            { (!filtered? todos : openTodos).map((todo, index) => (
             <Todo
                 key={todo.id}
                 index={index}
                 todo={todo}
-                completeTodo={completeTodo}
-                removeTodo={removeTodo}
+                // completeTodo={completeTodo}
+                // removeTodo={removeTodo}
                 moveListItem={!filtered ? moveTodotListItem: ()=>{return}}
                 handleChange={handleChange}
                 dateHidden={dateHidden}
-                createDeadline={createDeadline}
+                // createDeadline={createDeadline}
             />
             ))}
         </Box>
